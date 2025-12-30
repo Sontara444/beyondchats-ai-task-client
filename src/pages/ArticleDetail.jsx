@@ -15,6 +15,7 @@ const ArticleDetail = () => {
         const loadArticle = async () => {
             try {
                 const data = await fetchArticleById(id);
+                console.log("Article data received:", data);
                 setArticle(data);
                 // Default to showing enhanced if available, else original
                 setShowOriginal(false);
@@ -96,11 +97,14 @@ const ArticleDetail = () => {
 
                     {/* Content */}
                     <div className="prose prose-lg prose-blue mx-auto text-gray-700 leading-relaxed">
-                        {displayContent && displayContent.split('\n').map((paragraph, idx) => (
-                            <p key={idx} className="mb-4">
-                                {paragraph}
-                            </p>
-                        ))}
+                        {displayContent && displayContent.split('\n')
+                            .map(p => p.trim())
+                            .filter(p => p.length > 0)
+                            .map((paragraph, idx) => (
+                                <p key={idx} className="mb-4">
+                                    {paragraph}
+                                </p>
+                            ))}
                     </div>
 
                     {/* Footer/Citation */}

@@ -112,13 +112,33 @@ const ArticleDetail = () => {
                         <div className="bg-gray-50 rounded-2xl p-8">
                             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                                 <Bookmark className="w-5 h-5 text-blue-600" />
-                                Source & Context
+                                Sources & References
                             </h3>
-                            <p className="text-gray-600 text-sm mb-4">
-                                Original Source: <a href={article.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{article.source}</a>
-                            </p>
-                            <p className="text-gray-500 text-xs italic">
-                                Disclaimer: This article is for educational purposes. Content may have been aggregated from multiple sources using automated tools.
+
+                            {article.references && article.references.length > 0 ? (
+                                <ul className="space-y-3 mb-6">
+                                    {article.references.map((ref, idx) => (
+                                        <li key={idx} className="flex items-start gap-3">
+                                            <span className="text-blue-600 font-bold mt-0.5">•</span>
+                                            <a
+                                                href={ref.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-gray-700 hover:text-blue-600 transition-colors"
+                                            >
+                                                {ref.title || "External Source"}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="text-gray-600 text-sm mb-4">
+                                    Original Source: <a href={article.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{article.source}</a>
+                                </p>
+                            )}
+
+                            <p className="text-gray-500 text-xs italic border-t border-gray-200 pt-4">
+                                Disclaimer: This article is for educational purposes. Content has been enhanced using automated AI tools and external insights.
                             </p>
                         </div>
                     </div>

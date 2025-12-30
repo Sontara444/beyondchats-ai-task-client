@@ -8,6 +8,7 @@ const Home = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [scraping, setScraping] = useState(false);
+    const [enhancing, setEnhancing] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
     const loadArticles = async () => {
@@ -29,12 +30,26 @@ const Home = () => {
         setScraping(true);
         try {
             await scrapeArticles();
-            // Wait a bit or poll, but for now just reload list
             await loadArticles();
         } catch (error) {
             console.error(error);
         } finally {
             setScraping(false);
+        }
+    };
+
+    const handleEnhance = async () => {
+        setEnhancing(true);
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/articles/enhance`, { method: 'POST' });
+            if (response.ok) {
+                alert("Enhancement triggered! Refresh in a few moments to see results.");
+                await loadArticles();
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setEnhancing(false);
         }
     };
 
@@ -45,7 +60,12 @@ const Home = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 font-sans">
-            <Navbar onScrape={handleScrape} isScraping={scraping} />
+            <Navbar
+                onScrape={handleScrape}
+                isScraping={scraping}
+                onEnhance={handleEnhance}
+                isEnhancing={enhancing}
+            />
 
             <div className="relative bg-white overflow-hidden">
                 <div className="absolute inset-0">

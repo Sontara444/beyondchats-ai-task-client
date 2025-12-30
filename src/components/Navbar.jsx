@@ -1,8 +1,7 @@
-import React from 'react';
-import { RefreshCw, MessageSquare } from 'lucide-react';
+import { RefreshCw, MessageSquare, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ onScrape, isScraping }) => {
+const Navbar = ({ onScrape, isScraping, onEnhance, isEnhancing }) => {
     return (
         <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,17 +15,31 @@ const Navbar = ({ onScrape, isScraping }) => {
                         </span>
                     </Link>
 
-                    <button
-                        onClick={onScrape}
-                        disabled={isScraping}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isScraping
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-blue-500/30'
-                            }`}
-                    >
-                        <RefreshCw className={`w-4 h-4 ${isScraping ? 'animate-spin' : ''}`} />
-                        {isScraping ? 'Scraping...' : 'Refresh Content'}
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={onEnhance}
+                            disabled={isEnhancing}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isEnhancing
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+                                }`}
+                        >
+                            <Sparkles className={`w-4 h-4 ${isEnhancing ? 'animate-pulse' : ''}`} />
+                            {isEnhancing ? 'Enhancing...' : 'AI Enhance'}
+                        </button>
+
+                        <button
+                            onClick={onScrape}
+                            disabled={isScraping}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isScraping
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-blue-500/30'
+                                }`}
+                        >
+                            <RefreshCw className={`w-4 h-4 ${isScraping ? 'animate-spin' : ''}`} />
+                            {isScraping ? 'Scraping...' : 'Refresh Content'}
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>

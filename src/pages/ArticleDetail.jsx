@@ -43,14 +43,16 @@ const ArticleDetail = () => {
     );
 
     if (!article) return (
-        <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <div className="min-h-screen bg-white flex flex-col">
             <Navbar />
-            <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Article not found</h2>
-                <p className="text-gray-500 mb-6">The article you are looking for does not exist or has been removed.</p>
-                <Link to="/" className="text-purple-600 hover:text-purple-700 font-medium">
-                    Return to Home
-                </Link>
+            <div className="flex-grow flex flex-col items-center justify-center">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Article not found</h2>
+                    <p className="text-gray-500 mb-6">The article you are looking for does not exist or has been removed.</p>
+                    <Link to="/" className="text-purple-600 hover:text-purple-700 font-medium">
+                        Return to Home
+                    </Link>
+                </div>
             </div>
         </div>
     );

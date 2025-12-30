@@ -9,11 +9,15 @@ const ArticleDetail = () => {
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const [showOriginal, setShowOriginal] = useState(false);
+
     useEffect(() => {
         const loadArticle = async () => {
             try {
                 const data = await fetchArticleById(id);
                 setArticle(data);
+                // Default to showing enhanced if available, else original
+                setShowOriginal(false);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -37,6 +41,9 @@ const ArticleDetail = () => {
     const date = new Date(article.publishedDate).toLocaleDateString('en-US', {
         year: 'numeric', month: 'long', day: 'numeric'
     });
+
+    const displayContent = showOriginal ? article.originalContent : article.content;
+    const isEnhanced = article.isEnhanced;
 
     return (
         <div className="min-h-screen bg-white">
@@ -65,9 +72,22 @@ const ArticleDetail = () => {
                             {article.title}
                         </h1>
 
-                        {article.source === 'BeyondChats+AI' && (
-                            <div className="inline-block bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-lg px-4 py-2 text-sm text-blue-800 mb-8">
-                                ✨ This content has been enhanced with AI insights
+                        {isEnhanced && (
+                            <div className="flex justify-center mb-8">
+                                <div className="bg-gray-100 p-1 rounded-lg inline-flex relative">
+                                    <button
+                                        onClick={() => setShowOriginal(false)}
+                                        className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${!showOriginal ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                                    >
+                                        ✨ AI Enhanced
+                                    </button>
+                                    <button
+                                        onClick={() => setShowOriginal(true)}
+                                        className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${showOriginal ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                                    >
+                                        Original
+                                    </button>
+                                </div>
                             </div>
                         )}
 
@@ -76,11 +96,7 @@ const ArticleDetail = () => {
 
                     {/* Content */}
                     <div className="prose prose-lg prose-blue mx-auto text-gray-700 leading-relaxed">
-                        {/* 
-                           We need to render newlines as paragraphs. 
-                           Since content is text, we split by \n 
-                        */}
-                        {article.content.split('\n').map((paragraph, idx) => (
+                        {displayContent && displayContent.split('\n').map((paragraph, idx) => (
                             <p key={idx} className="mb-4">
                                 {paragraph}
                             </p>

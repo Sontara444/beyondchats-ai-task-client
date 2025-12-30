@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchArticles } from '../services/api'; // Or getById
+import { fetchArticles, fetchArticleById } from '../services/api'; // Updated import
 import { ArrowLeft, Calendar, User, Clock, Share2, Bookmark } from 'lucide-react';
 import Navbar from '../components/Navbar';
 
@@ -10,12 +10,9 @@ const ArticleDetail = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Ideally fetch by ID, but for now we reuse fetchArticles and find
         const loadArticle = async () => {
-            // In real app, call fetchArticleById(id)
             try {
-                const response = await fetch(`/api/articles/${id}`);
-                const data = await response.json();
+                const data = await fetchArticleById(id);
                 setArticle(data);
             } catch (error) {
                 console.error(error);

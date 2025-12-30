@@ -8,6 +8,14 @@ export const fetchArticles = async () => {
     return response.json();
 };
 
+export const fetchArticleById = async (id) => {
+    const response = await fetch(`${API_URL}/articles/${id}`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch article');
+    }
+    return response.json();
+};
+
 export const scrapeArticles = async () => {
     const response = await fetch(`${API_URL}/articles/scrape`, {
         method: 'POST',

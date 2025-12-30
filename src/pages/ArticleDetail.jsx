@@ -115,30 +115,60 @@ const ArticleDetail = () => {
                                 Sources & References
                             </h3>
 
-                            {article.references && article.references.length > 0 ? (
-                                <ul className="space-y-3 mb-6">
-                                    {article.references.map((ref, idx) => (
-                                        <li key={idx} className="flex items-start gap-3">
-                                            <span className="text-blue-600 font-bold mt-0.5">•</span>
-                                            <a
-                                                href={ref.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-gray-700 hover:text-blue-600 transition-colors"
-                                            >
-                                                {ref.title || "External Source"}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p className="text-gray-600 text-sm mb-4">
-                                    Original Source: <a href={article.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{article.source}</a>
-                                </p>
+                            {/* Original BeyondChats Source */}
+                            <div className="mb-6">
+                                <h4 className="text-sm font-semibold text-gray-700 mb-2">Original Source:</h4>
+                                <div className="flex items-start gap-3">
+                                    <span className="text-blue-600 font-bold mt-0.5">•</span>
+                                    <a
+                                        href={article.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-gray-700 hover:text-blue-600 transition-colors"
+                                    >
+                                        {article.title} - BeyondChats Blog
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* External References (if enhanced) */}
+                            {isEnhanced && article.references && article.references.length > 0 && (
+                                <div className="mb-6">
+                                    <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                                        External References Used for Enhancement:
+                                    </h4>
+                                    <ul className="space-y-3">
+                                        {article.references
+                                            .filter(ref => ref && ref.url && ref.title) // Validate references
+                                            .map((ref, idx) => (
+                                                <li key={idx} className="flex items-start gap-3">
+                                                    <span className="text-blue-600 font-bold mt-0.5">•</span>
+                                                    <a
+                                                        href={ref.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-gray-700 hover:text-blue-600 transition-colors"
+                                                    >
+                                                        {ref.title}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                            {/* Show message if no external references for enhanced articles */}
+                            {isEnhanced && (!article.references || article.references.length === 0) && (
+                                <div className="mb-6">
+                                    <p className="text-gray-600 text-sm italic">
+                                        This article was enhanced using AI analysis. External references were not available at the time of enhancement.
+                                    </p>
+                                </div>
                             )}
 
                             <p className="text-gray-500 text-xs italic border-t border-gray-200 pt-4">
-                                Disclaimer: This article is for educational purposes. Content has been enhanced using automated AI tools and external insights.
+                                Disclaimer: This article is for educational purposes.
+                                {isEnhanced && " Content has been enhanced using automated AI tools and external insights."}
                             </p>
                         </div>
                     </div>
